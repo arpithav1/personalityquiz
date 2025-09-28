@@ -1,226 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>What Kind of Birthday Cake Are You? 🎂</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body {
-      font-family: 'Comic Sans MS', cursive;
-      background: linear-gradient(to bottom, #fff0f6, #ffeaf4);
-      text-align: center;
-      padding: 20px;
+    :root{--pink:#e91e63;--bg1:#fff0f6;--bg2:#ffeaf4}
+    *{box-sizing:border-box}
+    body{
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(to bottom,var(--bg1),var(--bg2));
+      margin:0; padding:24px; text-align:center; color:#333;
     }
-    h1 {
-      color: #e91e63;
+    h1{color:var(--pink); margin:4px 0 8px}
+    .sub{color:#666; margin:0 0 16px}
+    .card{
+      background:#fff; border-radius:18px; max-width:700px; margin:0 auto;
+      padding:20px; box-shadow:0 8px 20px rgba(0,0,0,.08); border:1px solid #ffe1ef;
     }
-    .quiz-box {
-      background: white;
-      border-radius: 20px;
-      padding: 20px;
-      max-width: 600px;
-      margin: 20px auto;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    .progress-wrap{margin:6px 0 16px}
+    .progress-label{display:flex; justify-content:space-between; font-size:12px; color:#777}
+    .bar{height:8px; background:#f3f3f3; border-radius:999px; overflow:hidden}
+    .bar > div{height:8px; background:var(--pink); width:0%; transition:width .25s ease}
+    .question{font-size:1.1rem; font-weight:700; margin:8px 0 12px}
+    .btn{
+      display:block; width:100%; text-align:left; padding:12px 14px; margin:8px 0;
+      border:1px solid #ffd0e2; border-radius:12px; background:#fff; cursor:pointer;
+      transition:transform .05s ease, background .2s ease;
     }
-    .question {
-      font-size: 1.2em;
-      margin: 15px 0;
-      color: #333;
-    }
-    button {
-      display: block;
-      width: 100%;
-      margin: 8px 0;
-      padding: 12px;
-      font-size: 1em;
-      border: none;
-      border-radius: 12px;
-      background: #ffc1e3;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: #f48fb1;
-      color: white;
-    }
-    .result {
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 20px;
-      background: #fffafc;
-      font-size: 1.2em;
-    }
-    .hidden {
-      display: none;
-    }
+    .btn:hover{background:#fff6fa}
+    .btn:active{transform:scale(.99)}
+    .result{border-radius:18px; padding:18px; background:#fffafc; font-size:1.05rem}
+    .actions{display:flex; gap:10px; justify-content:center; margin-top:12px}
+    .primary{background:var(--pink); color:#fff; border:none}
+    .pill{padding:10px 14px; border-radius:999px; cursor:pointer}
+    .small{font-size:.9rem; color:#666}
   </style>
 </head>
 <body>
-  <h1>🎂 What Kind of Birthday Cake Are You? 🎂</h1>
-  <p>Answer these quirky questions to find out!</p>
+  <h1>🎂 What Kind of Birthday Cake Are You?</h1>
+  <p class="sub">A quirky, situational birthday quiz made just for you 💖</p>
 
-  <div class="quiz-box" id="quiz"></div>
-  <div class="result hidden" id="result"></div>
+  <div class="card" id="app">
+    <!-- quiz UI renders here -->
+  </div>
 
   <script>
-    const QUESTIONS = [
-      {
-        q: "It’s your birthday morning. You open your eyes and...",
-        options: [
-          { text: "Start a cozy playlist & check in on friends 💌", type: "MILKHONEY" },
-          { text: "Text the squad: brunch + selfies + chaos! 📸", type: "FUNFETTI" },
-          { text: "Plan the day with color-coded precision 🗂️", type: "GANACHE" },
-          { text: "Say 'surprise me' to the universe ✨", type: "LEMON" },
-          { text: "Curate a classy dinner & dress code 🍷", type: "VELVET" }
-        ]
-      },
-      {
-        q: "The cake knife is missing...",
-        options: [
-          { text: "Quietly solve it with a clever substitute ✂️", type: "MILKHONEY" },
-          { text: "Everyone just digs in with spoons 😂", type: "FUNFETTI" },
-          { text: "Engineer perfect slices with geometry 📐", type: "GANACHE" },
-          { text: "Turn it into a no-hands challenge 🤪", type: "LEMON" },
-          { text: "Delegate like a boss 🕴️", type: "VELVET" }
-        ]
-      },
-      {
-        q: "Pick your candle style:",
-        options: [
-          { text: "Soft sparkles + handwritten wishes 🕯️", type: "MILKHONEY" },
-          { text: "Rainbow fountain candle 🌈", type: "FUNFETTI" },
-          { text: "Minimalist gold tapers ✨", type: "GANACHE" },
-          { text: "Trick candles for chaos 🔥", type: "LEMON" },
-          { text: "Number candles to match decor 🎀", type: "VELVET" }
-        ]
-      },
-      {
-        q: "Meme check: you & Nabiha see something funny—what happens?",
-        options: [
-          { text: "Save it forever, then send at the *perfect* time 😂", type: "MILKHONEY" },
-          { text: "Spam each other with 20 TikToks instantly 📲", type: "FUNFETTI" },
-          { text: "Analyze why it’s funny & break it down 🧐", type: "GANACHE" },
-          { text: "Remake it on the spot 🎬", type: "LEMON" },
-          { text: "Post it with a matching aesthetic caption 📸", type: "VELVET" }
-        ]
-      },
-      {
-        q: "Roommate vibes: the suite kitchen is messy...",
-        options: [
-          { text: "I just clean it quietly so Nabiha doesn’t stress 🧹", type: "MILKHONEY" },
-          { text: "Laugh about it, film a TikTok skit 🎭", type: "FUNFETTI" },
-          { text: "Make a cleaning rotation chart 📊", type: "GANACHE" },
-          { text: "Pretend it doesn’t exist 🫣", type: "LEMON" },
-          { text: "Host a classy dinner anyway 🍽️", type: "VELVET" }
-        ]
-      },
-      {
-        q: "Roblox session with Nabiha—what’s your move?",
-        options: [
-          { text: "Stick to the rules, help her when she’s stuck 🎮", type: "MILKHONEY" },
-          { text: "Spend all your Robux on goofy hats 🎩", type: "FUNFETTI" },
-          { text: "Master the game mechanics 💻", type: "GANACHE" },
-          { text: "Chaos speed-run 🔥", type: "LEMON" },
-          { text: "Design the cutest avatar ✨", type: "VELVET" }
-        ]
-      },
-      {
-        q: "Coffee run at Stony Brook—what do you order?",
-        options: [
-          { text: "Something cozy like chai latte 🍵", type: "MILKHONEY" },
-          { text: "Iced caramel macchiato with extra drizzle 🍯", type: "FUNFETTI" },
-          { text: "Black coffee, strong, no-nonsense ☕", type: "GANACHE" },
-          { text: "Random seasonal special 🎃", type: "LEMON" },
-          { text: "Aesthetic matcha latte 🍃", type: "VELVET" }
-        ]
-      },
-      {
-        q: "Birthday playlist vibe?",
-        options: [
-          { text: "2000s throwbacks, low volume 🎶", type: "MILKHONEY" },
-          { text: "Bubble pop bangers everyone screams 🎤", type: "FUNFETTI" },
-          { text: "Indie alt with smooth transitions 🎧", type: "GANACHE" },
-          { text: "Chaotic remixes that shock the room 🔊", type: "LEMON" },
-          { text: "Timeless classics you can waltz to 🎻", type: "VELVET" }
-        ]
-      },
-      {
-        q: "After-party move?",
-        options: [
-          { text: "Text everyone to get home safe 🫶", type: "MILKHONEY" },
-          { text: "Dump all pics on IG instantly 📱", type: "FUNFETTI" },
-          { text: "Archive stories neatly in highlights 🗂️", type: "GANACHE" },
-          { text: "Spontaneous karaoke detour 🎤", type: "LEMON" },
-          { text: "Send a poll for next event ✨", type: "VELVET" }
-        ]
-      },
-      {
-        q: "Gift from Nabiha—what melts your heart?",
-        options: [
-          { text: "Handwritten note + something thoughtful 💝", type: "MILKHONEY" },
-          { text: "Funny meme collage 🖼️", type: "FUNFETTI" },
-          { text: "Perfectly organized stationery set ✏️", type: "GANACHE" },
-          { text: "A random trinket that makes no sense 😂", type: "LEMON" },
-          { text: "Something aesthetic & Pinterest-worthy 🌸", type: "VELVET" }
-        ]
-      }
-    ];
+    // Types (5 total). MILKHONEY is the ISFJ-spirited one (renamed).
+    const TYPES = ["MILKHONEY","FUNFETTI","GANACHE","LEMON","VELVET"];
 
     const RESULTS = {
       MILKHONEY: {
         title: "🥛 Milk & Honey Cake",
-        text: "Gentle, reliable, and deeply caring—you’re the cozy soul who remembers everyone’s favorites, keeps the vibe peaceful, and makes sure people feel safe & loved. (Yes, very ISFJ energy!)"
+        text:
+          "Warm, steady, and nurturing. You remember everyone’s little preferences, keep the vibe peaceful, and make sure each guest feels cared for. (Secretly the MVP of wholesome plans.)"
       },
       FUNFETTI: {
         title: "🌈 Rainbow Funfetti Cake",
-        text: "Playful, sparkly, and extra—you bring the party wherever you go. Instant joy in a slice!"
+        text:
+          "Playful, spontaneous, and sparkly. You turn any plan into a party and have everyone laughing in minutes."
       },
       GANACHE: {
         title: "🍫 Dark Chocolate Ganache Torte",
-        text: "Elegant, strategic, and sophisticated—you’re the one who makes everything look effortless (and delicious)."
+        text:
+          "Elegant, intentional, and composed. You nail the details and make everything look effortlessly put-together."
       },
       LEMON: {
-        title: "🍋 Zesty Lemon Raspberry Drizzle Cake",
-        text: "Clever, bold, and a little chaotic—you turn every mishap into the highlight of the night."
+        title: "🍋 Lemon Raspberry Drizzle Cake",
+        text:
+          "Clever, bold, delightfully unpredictable. You turn tiny hiccups into legendary moments."
       },
       VELVET: {
-        title: "❤️ Classic Red Velvet Cake",
-        text: "Magnetic, timeless, and host-with-the-most—you keep things classy and make everyone feel special."
+        title: "🎩 Classic Red Velvet Cake",
+        text:
+          "Magnetic and timeless. You set the vibe, raise the toast, and everyone leaves feeling special."
       }
     };
 
-    let currentQ = 0;
-    let scores = { MILKHONEY: 0, FUNFETTI: 0, GANACHE: 0, LEMON: 0, VELVET: 0 };
+    // 10 questions — POV is “you”; use “roommate” instead of names.
+    const QUESTIONS = [
+      {
+        q: "It’s your birthday morning. You wake up and…",
+        options: [
+          { text: "Put on a cozy playlist and check in on your favorite people.", type: "MILKHONEY" },
+          { text: "Text the group: brunch + selfies + chaos!", type: "FUNFETTI" },
+          { text: "Map a perfect day with time blocks and a checklist.", type: "GANACHE" },
+          { text: "Say “surprise me” to the universe and wing it.", type: "LEMON" },
+          { text: "Curate a classy dinner plan with a dress code.", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Plot twist: the cake knife is missing.",
+        options: [
+          { text: "Quietly solve it with scissors/plate — problem handled.", type: "MILKHONEY" },
+          { text: "Spoons for everyone. Chaotic communal scoop!", type: "FUNFETTI" },
+          { text: "Engineer perfect slices using geometry lines.", type: "GANACHE" },
+          { text: "Turn it into a no-hands mini challenge.", type: "LEMON" },
+          { text: "Delegate like a boss: you fetch, you film, you plate.", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Pick your candle vibe:",
+        options: [
+          { text: "Soft sparkles + a thoughtful, quiet wish.", type: "MILKHONEY" },
+          { text: "Rainbow fountain candle, obviously.", type: "FUNFETTI" },
+          { text: "Minimalist tall tapers and clean lines.", type: "GANACHE" },
+          { text: "Trick candles that won’t go out.", type: "LEMON" },
+          { text: "Number candles that match the tablescape.", type: "VELVET" }
+        ]
+      },
+      {
+        q: "You and your roommate find a hilarious meme.",
+        options: [
+          { text: "Save it to share at the perfect mood-lifting moment.", type: "MILKHONEY" },
+          { text: "Spam each other 20 more instantly.", type: "FUNFETTI" },
+          { text: "Break down why it’s comedic genius.", type: "GANACHE" },
+          { text: "Recreate it immediately as a video.", type: "LEMON" },
+          { text: "Post it with the most aesthetic caption.", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Roommate life: the kitchen is a mess before people come over.",
+        options: [
+          { text: "You tidy it calmly so everyone can relax.", type: "MILKHONEY" },
+          { text: "Turn clean-up into a funny montage.", type: "FUNFETTI" },
+          { text: "Make a quick rotation/roles list.", type: "GANACHE" },
+          { text: "Close the door. We do not perceive.", type: "LEMON" },
+          { text: "Style the counter so it still looks chic.", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Roblox session with your roommate—your energy?",
+        options: [
+          { text: "Helpful, patient, and rule-following teammate.", type: "MILKHONEY" },
+          { text: "Chaos shopper: silly cosmetic upgrades first.", type: "FUNFETTI" },
+          { text: "Mechanics master: learn, optimize, win.", type: "GANACHE" },
+          { text: "Speed-run gremlin: go fast, break things.", type: "LEMON" },
+          { text: "Drip architect: cutest avatar wins.", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Coffee run on campus — what do you order?",
+        options: [
+          { text: "Cozy chai/latte that soothes the soul.", type: "MILKHONEY" },
+          { text: "Iced caramel macchiato with extra drizzle.", type: "FUNFETTI" },
+          { text: "Straight black coffee. Efficient.", type: "GANACHE" },
+          { text: "Whatever seasonal special looks unhinged.", type: "LEMON" },
+          { text: "Aesthetic matcha that photographs beautifully.", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Playlist for the night:",
+        options: [
+          { text: "Comfort bops at cozy volume.", type: "MILKHONEY" },
+          { text: "Bubble pop anthems everyone screams.", type: "FUNFETTI" },
+          { text: "Indie/alt with immaculate transitions.", type: "GANACHE" },
+          { text: "Mashups that make the room yell “WHO MADE THIS?!”", type: "LEMON" },
+          { text: "Timeless crowd-pleasers with a little glam.", type: "VELVET" }
+        ]
+      },
+      {
+        q: "After-party power move:",
+        options: [
+          { text: "Text everyone to get home safe and share the best pics.", type: "MILKHONEY" },
+          { text: "Instant photo dump with chaotic captions.", type: "FUNFETTI" },
+          { text: "Archive stories neatly into highlight sets.", type: "GANACHE" },
+          { text: "Spontaneous karaoke detour, obviously.", type: "LEMON" },
+          { text: "Send a chic poll for the next event.", type: "VELVET" }
+        ]
+      },
+      {
+        q: "A thoughtful birthday gift lands in your lap.",
+        options: [
+          { text: "Handwritten note + something you mentioned once = tears.", type: "MILKHONEY" },
+          { text: "A meme collage that has you wheezing.", type: "FUNFETTI" },
+          { text: "The perfect stationery/organizer set.", type: "GANACHE" },
+          { text: "A random trinket that makes no sense (you love it).", type: "LEMON" },
+          { text: "Something Pinterest-worthy you’ll display.", type: "VELVET" }
+        ]
+      }
+    ];
 
-    function showQuestion() {
-      if (currentQ >= QUESTIONS.length) {
-        showResult();
+    // --- Utilities ---
+    const $ = (sel) => document.querySelector(sel);
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for (let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    // State
+    let step = 0;
+    let scores = Object.fromEntries(TYPES.map(t => [t, 0]));
+
+    // Render
+    function render(){
+      const app = $("#app");
+      const total = QUESTIONS.length;
+
+      if(step >= total){
+        // compute result (break ties by picking the earliest highest type deterministically)
+        const entries = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+        const topType = entries[0][0];
+        const r = RESULTS[topType];
+
+        app.innerHTML = `
+          <div class="result">
+            <h2 style="margin:4px 0 8px">${r.title}</h2>
+            <p>${r.text}</p>
+            <div class="actions">
+              <button class="pill primary" onclick="copyResult('${r.title.replace(/'/g,"\\'")}')">Copy my result</button>
+              <button class="pill" onclick="restart()">Retake</button>
+            </div>
+            <p class="small" style="margin-top:10px">P.S. Share this link so your roommate can take it too!</p>
+          </div>
+        `;
         return;
       }
-      const qData = QUESTIONS[currentQ];
-      const quizDiv = document.getElementById("quiz");
-      quizDiv.innerHTML = `<div class='question'>${qData.q}</div>`;
-      qData.options.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.textContent = opt.text;
-        btn.onclick = () => {
-          scores[opt.type]++;
-          currentQ++;
-          showQuestion();
-        };
-        quizDiv.appendChild(btn);
+
+      const q = QUESTIONS[step];
+      const pct = Math.round(((step)/total)*100);
+
+      const shuffled = shuffle(q.options); // randomize options per question
+
+      app.innerHTML = `
+        <div class="progress-wrap">
+          <div class="progress-label">
+            <span>Question ${step+1} / ${total}</span>
+            <span>${pct}%</span>
+          </div>
+          <div class="bar"><div style="width:${pct}%"></div></div>
+        </div>
+        <div class="question">${q.q}</div>
+        ${shuffled.map((op,i)=>`
+          <button class="btn" data-type="${op.type}">${op.text}</button>
+        `).join("")}
+      `;
+
+      // attach handlers
+      app.querySelectorAll(".btn").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const type = btn.getAttribute("data-type");
+          scores[type] += 1;
+          step += 1;
+          render();
+        });
       });
     }
 
-    function showResult() {
-      document.getElementById("quiz").classList.add("hidden");
-      const resultDiv = document.getElementById("result");
-      resultDiv.classList.remove("hidden");
-
-      let best = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-      resultDiv.innerHTML = `<h2>${RESULTS[best].title}</h2><p>${RESULTS[best].text}</p>`;
+    function restart(){
+      step = 0;
+      scores = Object.fromEntries(TYPES.map(t => [t, 0]));
+      render();
     }
 
-    showQuestion();
+    function copyResult(title){
+      const text = `I’m a ${title}! What kind of birthday cake are you? 🎂`;
+      navigator.clipboard?.writeText(text);
+      alert("Copied! ✨");
+    }
+
+    // go
+    render();
   </script>
 </body>
 </html>
