@@ -66,7 +66,7 @@
       {
         q: "It’s your birthday morning. You open your eyes and...",
         options: [
-          { text: "Start a cozy playlist & check in on friends 💌", type: "ISFJ" },
+          { text: "Start a cozy playlist & check in on friends 💌", type: "MILKHONEY" },
           { text: "Text the squad: brunch + selfies + chaos! 📸", type: "FUNFETTI" },
           { text: "Plan the day with color-coded precision 🗂️", type: "GANACHE" },
           { text: "Say 'surprise me' to the universe ✨", type: "LEMON" },
@@ -76,7 +76,7 @@
       {
         q: "The cake knife is missing...",
         options: [
-          { text: "Quietly solve it with a clever substitute ✂️", type: "ISFJ" },
+          { text: "Quietly solve it with a clever substitute ✂️", type: "MILKHONEY" },
           { text: "Everyone just digs in with spoons 😂", type: "FUNFETTI" },
           { text: "Engineer perfect slices with geometry 📐", type: "GANACHE" },
           { text: "Turn it into a no-hands challenge 🤪", type: "LEMON" },
@@ -86,19 +86,89 @@
       {
         q: "Pick your candle style:",
         options: [
-          { text: "Soft sparkles + handwritten wishes 🕯️", type: "ISFJ" },
+          { text: "Soft sparkles + handwritten wishes 🕯️", type: "MILKHONEY" },
           { text: "Rainbow fountain candle 🌈", type: "FUNFETTI" },
           { text: "Minimalist gold tapers ✨", type: "GANACHE" },
           { text: "Trick candles for chaos 🔥", type: "LEMON" },
           { text: "Number candles to match decor 🎀", type: "VELVET" }
         ]
+      },
+      {
+        q: "Meme check: you & Nabiha see something funny—what happens?",
+        options: [
+          { text: "Save it forever, then send at the *perfect* time 😂", type: "MILKHONEY" },
+          { text: "Spam each other with 20 TikToks instantly 📲", type: "FUNFETTI" },
+          { text: "Analyze why it’s funny & break it down 🧐", type: "GANACHE" },
+          { text: "Remake it on the spot 🎬", type: "LEMON" },
+          { text: "Post it with a matching aesthetic caption 📸", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Roommate vibes: the suite kitchen is messy...",
+        options: [
+          { text: "I just clean it quietly so Nabiha doesn’t stress 🧹", type: "MILKHONEY" },
+          { text: "Laugh about it, film a TikTok skit 🎭", type: "FUNFETTI" },
+          { text: "Make a cleaning rotation chart 📊", type: "GANACHE" },
+          { text: "Pretend it doesn’t exist 🫣", type: "LEMON" },
+          { text: "Host a classy dinner anyway 🍽️", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Roblox session with Nabiha—what’s your move?",
+        options: [
+          { text: "Stick to the rules, help her when she’s stuck 🎮", type: "MILKHONEY" },
+          { text: "Spend all your Robux on goofy hats 🎩", type: "FUNFETTI" },
+          { text: "Master the game mechanics 💻", type: "GANACHE" },
+          { text: "Chaos speed-run 🔥", type: "LEMON" },
+          { text: "Design the cutest avatar ✨", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Coffee run at Stony Brook—what do you order?",
+        options: [
+          { text: "Something cozy like chai latte 🍵", type: "MILKHONEY" },
+          { text: "Iced caramel macchiato with extra drizzle 🍯", type: "FUNFETTI" },
+          { text: "Black coffee, strong, no-nonsense ☕", type: "GANACHE" },
+          { text: "Random seasonal special 🎃", type: "LEMON" },
+          { text: "Aesthetic matcha latte 🍃", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Birthday playlist vibe?",
+        options: [
+          { text: "2000s throwbacks, low volume 🎶", type: "MILKHONEY" },
+          { text: "Bubble pop bangers everyone screams 🎤", type: "FUNFETTI" },
+          { text: "Indie alt with smooth transitions 🎧", type: "GANACHE" },
+          { text: "Chaotic remixes that shock the room 🔊", type: "LEMON" },
+          { text: "Timeless classics you can waltz to 🎻", type: "VELVET" }
+        ]
+      },
+      {
+        q: "After-party move?",
+        options: [
+          { text: "Text everyone to get home safe 🫶", type: "MILKHONEY" },
+          { text: "Dump all pics on IG instantly 📱", type: "FUNFETTI" },
+          { text: "Archive stories neatly in highlights 🗂️", type: "GANACHE" },
+          { text: "Spontaneous karaoke detour 🎤", type: "LEMON" },
+          { text: "Send a poll for next event ✨", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Gift from Nabiha—what melts your heart?",
+        options: [
+          { text: "Handwritten note + something thoughtful 💝", type: "MILKHONEY" },
+          { text: "Funny meme collage 🖼️", type: "FUNFETTI" },
+          { text: "Perfectly organized stationery set ✏️", type: "GANACHE" },
+          { text: "A random trinket that makes no sense 😂", type: "LEMON" },
+          { text: "Something aesthetic & Pinterest-worthy 🌸", type: "VELVET" }
+        ]
       }
     ];
 
     const RESULTS = {
-      ISFJ: {
-        title: "🧁 Cozy Vanilla Custard Cake (ISFJ)",
-        text: "Warm, thoughtful, and reliable—you make sure everyone gets a slice and feels cared for. The ultimate comfort cake."
+      MILKHONEY: {
+        title: "🥛 Milk & Honey Cake",
+        text: "Gentle, reliable, and deeply caring—you’re the cozy soul who remembers everyone’s favorites, keeps the vibe peaceful, and makes sure people feel safe & loved. (Yes, very ISFJ energy!)"
       },
       FUNFETTI: {
         title: "🌈 Rainbow Funfetti Cake",
@@ -119,7 +189,7 @@
     };
 
     let currentQ = 0;
-    let scores = { ISFJ: 0, FUNFETTI: 0, GANACHE: 0, LEMON: 0, VELVET: 0 };
+    let scores = { MILKHONEY: 0, FUNFETTI: 0, GANACHE: 0, LEMON: 0, VELVET: 0 };
 
     function showQuestion() {
       if (currentQ >= QUESTIONS.length) {
@@ -146,7 +216,6 @@
       const resultDiv = document.getElementById("result");
       resultDiv.classList.remove("hidden");
 
-      // pick highest scoring type
       let best = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
       resultDiv.innerHTML = `<h2>${RESULTS[best].title}</h2><p>${RESULTS[best].text}</p>`;
     }
