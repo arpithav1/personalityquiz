@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>What Kind of Birthday Cake Are You? 🎂</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background: linear-gradient(to bottom, #fff0f6, #ffeaf4);
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #e91e63;
+    }
+    .quiz-box {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 600px;
+      margin: 20px auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-size: 1.2em;
+      margin: 15px 0;
+      color: #333;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      font-size: 1em;
+      border: none;
+      border-radius: 12px;
+      background: #ffc1e3;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #f48fb1;
+      color: white;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 20px;
+      background: #fffafc;
+      font-size: 1.2em;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎂 What Kind of Birthday Cake Are You? 🎂</h1>
+  <p>Answer these quirky questions to find out!</p>
+
+  <div class="quiz-box" id="quiz"></div>
+  <div class="result hidden" id="result"></div>
+
+  <script>
+    const QUESTIONS = [
+      {
+        q: "It’s your birthday morning. You open your eyes and...",
+        options: [
+          { text: "Start a cozy playlist & check in on friends 💌", type: "ISFJ" },
+          { text: "Text the squad: brunch + selfies + chaos! 📸", type: "FUNFETTI" },
+          { text: "Plan the day with color-coded precision 🗂️", type: "GANACHE" },
+          { text: "Say 'surprise me' to the universe ✨", type: "LEMON" },
+          { text: "Curate a classy dinner & dress code 🍷", type: "VELVET" }
+        ]
+      },
+      {
+        q: "The cake knife is missing...",
+        options: [
+          { text: "Quietly solve it with a clever substitute ✂️", type: "ISFJ" },
+          { text: "Everyone just digs in with spoons 😂", type: "FUNFETTI" },
+          { text: "Engineer perfect slices with geometry 📐", type: "GANACHE" },
+          { text: "Turn it into a no-hands challenge 🤪", type: "LEMON" },
+          { text: "Delegate like a boss 🕴️", type: "VELVET" }
+        ]
+      },
+      {
+        q: "Pick your candle style:",
+        options: [
+          { text: "Soft sparkles + handwritten wishes 🕯️", type: "ISFJ" },
+          { text: "Rainbow fountain candle 🌈", type: "FUNFETTI" },
+          { text: "Minimalist gold tapers ✨", type: "GANACHE" },
+          { text: "Trick candles for chaos 🔥", type: "LEMON" },
+          { text: "Number candles to match decor 🎀", type: "VELVET" }
+        ]
+      }
+    ];
+
+    const RESULTS = {
+      ISFJ: {
+        title: "🧁 Cozy Vanilla Custard Cake (ISFJ)",
+        text: "Warm, thoughtful, and reliable—you make sure everyone gets a slice and feels cared for. The ultimate comfort cake."
+      },
+      FUNFETTI: {
+        title: "🌈 Rainbow Funfetti Cake",
+        text: "Playful, sparkly, and extra—you bring the party wherever you go. Instant joy in a slice!"
+      },
+      GANACHE: {
+        title: "🍫 Dark Chocolate Ganache Torte",
+        text: "Elegant, strategic, and sophisticated—you’re the one who makes everything look effortless (and delicious)."
+      },
+      LEMON: {
+        title: "🍋 Zesty Lemon Raspberry Drizzle Cake",
+        text: "Clever, bold, and a little chaotic—you turn every mishap into the highlight of the night."
+      },
+      VELVET: {
+        title: "❤️ Classic Red Velvet Cake",
+        text: "Magnetic, timeless, and host-with-the-most—you keep things classy and make everyone feel special."
+      }
+    };
+
+    let currentQ = 0;
+    let scores = { ISFJ: 0, FUNFETTI: 0, GANACHE: 0, LEMON: 0, VELVET: 0 };
+
+    function showQuestion() {
+      if (currentQ >= QUESTIONS.length) {
+        showResult();
+        return;
+      }
+      const qData = QUESTIONS[currentQ];
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `<div class='question'>${qData.q}</div>`;
+      qData.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt.text;
+        btn.onclick = () => {
+          scores[opt.type]++;
+          currentQ++;
+          showQuestion();
+        };
+        quizDiv.appendChild(btn);
+      });
+    }
+
+    function showResult() {
+      document.getElementById("quiz").classList.add("hidden");
+      const resultDiv = document.getElementById("result");
+      resultDiv.classList.remove("hidden");
+
+      // pick highest scoring type
+      let best = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+      resultDiv.innerHTML = `<h2>${RESULTS[best].title}</h2><p>${RESULTS[best].text}</p>`;
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
